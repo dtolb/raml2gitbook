@@ -1,0 +1,35 @@
+{
+  "name": "raml2gitbook",
+  "version": "1.0.0",
+  "description": "transform valid raml1 spec into gitbook pages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dtolb/raml2gitbook.git"
+  },
+  "keywords": [
+    "raml",
+    "gitbook",
+    "documentation",
+    "node",
+    "nodejs",
+    "raml1",
+    "mulesoft",
+    "docs"
+  ],
+  "author": "Dan Tolbert",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dtolb/raml2gitbook/issues"
+  },
+  "homepage": "https://github.com/dtolb/raml2gitbook#readme",
+  "dependencies": {
+    "debug": "^3.0.1",
+    "raml2html": "^6.4.1",
+    "raml2obj": "^5.5.0",
+    "rmdir": "^1.2.0"
+  }
+}
