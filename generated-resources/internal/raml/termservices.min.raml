@@ -1,0 +1,860 @@
+#%RAML 0.8
+---
+title: TermServices REST API Documentation
+# Use null host here to trigger automatic replacement in javascript
+baseUri: http://null
+version: v1
+securedBy: [basic]
+securitySchemes:
+   - basic:
+        type: Basic Authentication
+/customer/account: 
+    get:
+        description: get all get accounts
+        responses:
+            200:
+                description: managed to get all accounts
+                body:
+                    application/json:
+                        example: |
+                            [
+                                {
+                                    "id":210,
+                                    "externalAccountId":1,
+                                    "lcrId":777,
+                                    "core2Id":1234
+                                }
+                            ]
+    post:
+        description: create account
+        body:
+            application/json:
+                example: |
+                    {
+                        "id":null,
+                        "externalAccountId":1,
+                        "lcrId":777,
+                        "core2Id":1234
+                    }
+        responses:
+            201:
+                description: account was successfully created
+            400:
+                description: required fields are absent or specified externalAccountId is already in use
+    /{id}:
+        get:
+            description: get account
+            responses:
+                200:
+                    body:
+                        application/json:
+                            example: |
+                                {
+                                    "id":210,
+                                    "externalAccountId":1,
+                                    "lcrId":777,
+                                    "core2Id":1234
+                                }
+                404:
+                    description: account with specified id does not exists
+        delete:
+            description: delete account
+            responses:
+                200:
+                    description: account was deleted
+                404:
+                    description: account with specified id was not found
+/carriermask: 
+    get:
+        description: get all carrier masks
+        responses:
+            200:
+                description: managed to get all carrier masks
+                body:
+                    application/json:
+                        example: |
+                            [
+                                {
+                                    "id":1,
+                                    "name":"carrierMaskName1410976299650",
+                                    "carrierMaskType":"NPANXX",
+                                    "npaNxxCarrierMasks":[
+                                        {
+                                            "npaNxx":"222222",
+                                            "carrierMask":"00000"
+                                        }
+                                    ],
+                                    "globalCarrierMask":null,
+                                    "userType":"TERMINATION_SERVICES"
+                                }
+                            ]
+    post:
+        description: create account
+        body:
+            application/json:
+                example: |
+                    {
+                        "id":null,
+                        "name":"carrierMaskName1410976299650",
+                        "carrierMaskType":"NPANXX",
+                        "npaNxxCarrierMasks":[
+                            {
+                                "npaNxx":"222222",
+                                "carrierMask":"00000"
+                            }
+                        ],
+                        "globalCarrierMask":null,
+                        "userType":"TERMINATION_SERVICES"
+                    }
+        responses:
+            201:
+                description: account was successfully created
+            400:
+                description: required fields are absent, npaNxx or global carrier mask validation failed
+    /{id}:
+        delete:
+            description: delete carrier mask
+            responses:
+                200:
+                    description: carrier mask was deleted
+                404:
+                    description: carrier mask with specified id was not found
+/customer/account/{id}/attribute: 
+    get:
+        description: get all get attributes
+        responses:
+            200:
+                description: managed to get all attributes
+                body:
+                    application/json:
+                        example: |
+                            [
+                                {
+                                    "id":205,
+                                    "name":"TRACE",
+                                    "value":"{}",
+                                    "effectiveDate":"2014-09-18T08:18:48",
+                                    "ineffectiveDate":"2014-09-18T08:18:48",
+                                    "externalId":1
+                                }
+                            ]
+    post:
+        description: add to customer attribute
+        body:
+            application/json:
+                example: |
+                    {
+                       "id":null,
+                        "name":"TRACE",
+                        "value":"{}",
+                        "effectiveDate":"2014-09-18T08:18:48",
+                        "ineffectiveDate":"2014-09-18T08:18:48",
+                        "externalId":1
+                    }
+        responses:
+            201:
+                description: attribute was successfully added
+            404:
+                description: specified in request account was not found
+    /{attributeId}:
+        get:
+            description: get account attribute by id
+            responses:
+                200:
+                    body:
+                        application/json:
+                            example: |
+                                {
+                                    "id":205,
+                                    "name":"TRACE",
+                                    "value":"{}",
+                                    "profileId":1770,
+                                    "effectiveDate":"2014-09-18T08:18:48",
+                                    "ineffectiveDate":"2014-09-18T08:18:48",
+                                    "externalId":1
+                                }
+                404:
+                    description: account or attribute was not found
+        put:
+            description: update account attribute, i.e. attribute value
+            responses:
+                200:
+                    body:
+                        application/json:
+                            example: |
+                                {
+                                    "id":205,
+                                    "name":"TRACE",
+                                    "value":"New value",
+                                    "profileId":1770,
+                                    "effectiveDate":"2014-09-18T08:18:48",
+                                    "ineffectiveDate":"2014-09-18T08:18:48",
+                                    "externalId":1
+                                }
+                400:
+                    description: update validation failed, eg changed forbidden fields (like metadata name)
+                404:
+                    description: account or attribute was not found
+        delete:
+            description: delete account attribute
+            responses:
+                200:
+                    description: account attribute was deleted
+                400:
+                    description: some required value was not found
+                404:
+                    description: account or attribute was not found
+/customer/attribute: 
+    get:
+        description: get all attribute metadata
+        responses:
+            200:
+                description: managed to get all attribute metadata
+                body:
+                    application/json:
+                        example: |
+                            [
+                                {
+                                    "id":1238,
+                                    "name":"TRACE",
+                                    "validationType":"FREE_FORM",
+                                    "attributeProvisionTypes":["ACCOUNT","GATEWAY"],
+                                    "origin":"LCR",
+                                    "repeatable":true,
+                                    "values":["OPTION1","OPTION2"]
+                                }
+                            ]
+    post:
+        description: add attribute metadata
+        body:
+            application/json:
+                example: |
+                    {
+                        "id":null,
+                        "name":"TRACE",
+                        "validationType":"FREE_FORM",
+                        "attributeProvisionTypes":["ACCOUNT","GATEWAY"],
+                        "origin":"LCR",
+                        "repeatable":true,
+                        "values":["OPTION1","OPTION2"]
+                    }
+        responses:
+            201:
+                description: attribute was successfully added
+            400:
+                description: some required value was not found
+    /{id}:
+        get:
+            description: get attribute metadata by id
+            responses:
+                200:
+                    body:
+                        application/json:
+                            example: |
+                                {
+                                    "id":1238,
+                                    "name":"TRACE",
+                                    "validationType":"FREE_FORM",
+                                    "attributeProvisionTypes":["ACCOUNT","GATEWAY"],
+                                    "origin":"LCR",
+                                    "repeatable":true,
+                                    "values":["OPTION1","OPTION2"]
+                                }
+                404:
+                    description: attribute metadata was not found
+        put:
+            description: update account attribute, i.e. attribute value
+            responses:
+                200:
+                    body:
+                        application/json:
+                            example: |
+                                {
+                                    "id":1240,
+                                    "name":"TRACE",
+                                    "validationType":"MULTIPLE_CHOICE",
+                                    "attributeProvisionTypes":["ACCOUNT","GATEWAY"],
+                                    "origin":"BILLING",
+                                    "repeatable":false,
+                                    "values":["OPTION3","OPTION4"]
+                                }
+                400:
+                    description: some required value was not found
+                404:
+                    description: attribute metadata with specified id was not found
+        delete:
+            description: delete attribute metadata
+            responses:
+                200:
+                    description: attribute metadata was deleted
+                400:
+                    description: some required value was not found
+                404:
+                    description: attribute metadata was not found
+    /name/{name}:
+        get:
+            description: get attribute metadata by name
+            responses:
+                200:
+                    body:
+                        application/json:
+                            example: |
+                                {
+                                    "id":1240,
+                                    "name":"TRACE",
+                                    "validationType":"MULTIPLE_CHOICE",
+                                    "attributeProvisionTypes":["ACCOUNT","GATEWAY"],
+                                    "origin":"BILLING",
+                                    "repeatable":false,
+                                    "values":["OPTION3","OPTION4"]
+                                }
+                404:
+                    description: attribute metadata was not found
+    /type/{type}:
+        get:
+            description: get attribute metadata by type (origin)
+            responses:
+                200:
+                    body:
+                        application/json:
+                            example: |
+                                [   {
+                                        "id":1240,
+                                        "name":"TRACE",
+                                        "validationType":"MULTIPLE_CHOICE",
+                                        "attributeProvisionTypes":["ACCOUNT","GATEWAY"],
+                                        "origin":"BILLING",
+                                        "repeatable":false,
+                                        "values":["OPTION3","OPTION4"]
+                                    }
+                                ]
+/customer/product: 
+    get:
+        description: return a list of all available products
+        responses:
+            200:
+                description: managed to get all accounts
+                body:
+                    application/json:
+                        example: |
+                            [
+                                {
+                                    "id":86,
+                                    "name":"Product name",
+                                    "key":null,
+                                    "description":null,
+                                    "attributes":{}
+                                }
+                            ]
+    post:
+        description: create product
+        body:
+            application/json:
+                example: |
+                    {
+                        "id":null,
+                        "name":"Product name",
+                        "key":"11b971ca-11a8-48d9-ab4f-61405bc86df0",
+                        "description":null,
+                        "attributes":null
+                    }
+        responses:
+            201:
+                description: product was successfully created
+            400:
+                description: required fields are absent, or product contains some attributes
+    /{productId}:
+        get:
+            description: return a specific product
+            queryParameters:
+                toAssign:
+                    description: if toAssign = true response is a formated json response of the product assignment JSON. So that an upstream system can take this json, fill in the values, and submit it to a product assignment.
+            responses:
+                200:
+                    body:
+                        application/json:
+                            example: |
+                                {
+                                  "attributeId" : 5,
+                                  "productName" : "Product name",
+                                  "attributes" : { }
+                                }
+                404:
+                    description: product with specified was not found
+        delete:
+            description: delete product
+            responses:
+                200:
+                    description: product was deleted
+                404:
+                    description: product with specified was not found
+        /attribute:
+            get:
+                description: return all available attributes for current product
+                responses:
+                    200:
+                        description: managed to get all attributes
+                        body:
+                            application/json:
+                                example: |
+                                    [
+                                        {
+                                            "id":207,
+                                            "name":"TRACE",
+                                            "value":"true",
+                                            "effectiveDate":"2014-09-18T11:14:03",
+                                            "ineffectiveDate":"2014-09-18T11:14:03",
+                                            "externalId":10
+                                        }
+                                    ]
+            post:
+                description: assign attribute to product
+                body:
+                    application/json:
+                        example: |
+                            {
+                              "id" : null,
+                              "name" : "TRACE",
+                              "value" : "true",
+                              "effectiveDate" : "2014-09-18T11:19:47",
+                              "ineffectiveDate" : "2014-09-18T11:19:48",
+                              "externalId" : 10
+                            }
+                responses:
+                    201:
+                        description: attribute was successfully assigned
+                    400:
+                        description: required values are absent, or some restricted values exists (eg id)
+                    404:
+                        description: product was not found
+            /attributeId:
+                get:
+                    description: return specific attribute
+                    responses:
+                        200:
+                            description: managed to found attribute
+                            body:
+                                application/json:
+                                    example: |
+                                        {
+                                            "id":209,
+                                            "name":"TRACE",
+                                            "value":"5",
+                                            "effectiveDate":"2014-09-18T12:28:21",
+                                            "ineffectiveDate":"2014-09-18T12:28:21",
+                                            "externalId":10
+                                        }
+                        404:
+                            description: product or attribute was not found
+                delete:
+                    description: delete product attribute
+                    responses:
+                        200:
+                            description: product attribute was deleted
+                        404:
+                            description: product or attribute was not found
+/customer/account/{accountId}/product: 
+    get:
+        description: should return assigned products
+        responses:
+            200:
+                description: managed to get assigned products
+                body:
+                    application/json:
+                        example: |
+                            [
+                                {
+                                    "id":93,
+                                    "name":"Default name",
+                                    "key":null,
+                                    "description":null,
+                                    "attributes":{
+                                        "TRACE":"true"
+                                        }
+                                }
+                            ]
+    post:
+        description: assign product to account
+        body:
+            application/json:
+                example: |
+                    {
+                      "attributeId" : null,
+                      "productName" : "Default name",
+                      "attributes" : { }
+                    }
+        responses:
+            201:
+                description: product was successfully assigned
+            400:
+                description: required fields are absent, or product does not contain any attribute
+            404:
+                description: account or product was not found
+    /{productId}:
+        get:
+            description: return a specific product
+            responses:
+                200:
+                    body:
+                        application/json:
+                            example: |
+                                {
+                                    "id":93,
+                                    "name":"Default name",
+                                    "key":null,
+                                    "description":null,
+                                    "attributes":{
+                                        "TRACE":"true"
+                                        }
+                                }
+                404:
+                    description: account or product was not found
+        delete:
+            description: delete product assignment
+            responses:
+                200:
+                    description: assignment product was deleted
+                404:
+                    description: assignment product with specified was not found
+/customer/ratedeck: 
+    get:
+        description: get all rate decks (metadata)
+        responses:
+            200:
+                description: managed to get all accounts
+                body:
+                    application/json:
+                        example: |
+                            [
+                                {
+                                    "id":1,
+                                    "name":"npanxx1.xlsx",
+                                    "deckType":"NPANXX",
+                                    "rows":5,
+                                    "fileName":"npanxx1.xlsx"
+                                }
+                            ]
+    post:
+        description: load rate deck file
+        body:
+            application/x-www-form-urlencoded:
+                formParameters:
+                  file:
+                        type: file
+                        description: file to upload
+        responses:
+            201:
+                description: file was successfully loaded
+            400:
+                description: deck file is empty
+    /{deckId}:
+        get:
+            description: return rate deck metadata or file if filetype parameter is not null
+            queryParameters:
+                filetype:
+                    description: define in what format deck file will be loaded
+                    example: text/csv or application/vnd.ms-excel
+            responses:
+                200:
+                    body:
+                        application/json:
+                            example: |
+                                {
+                                    "id":1,
+                                    "name":"npanxx1.xlsx",
+                                    "deckType":"NPANXX",
+                                    "rows":5,
+                                    "fileName":"npanxx1.xlsx"
+                                }
+                404:
+                    description: rate deck was not found
+    /{id}:
+        delete:
+            description: delete rate deck
+            responses:
+                202:
+                    description: rate deck was deleted
+    /type/{deckType}:
+        get:
+            description: return rate decks of specific type (NPANXX, LATAOCN)
+            responses:
+                200:
+                    description: managed to get all rate decks by type
+                    body:
+                        application/json:
+                            example: |
+                                [
+                                    {
+                                        "id":1,
+                                        "name":"npanxx1.xlsx",
+                                        "deckType":"NPANXX",
+                                        "rows":5,
+                                        "fileName":"npanxx1.xlsx"
+                                    }
+                                ]
+/customer/account/{id}/ratedeck: 
+    get:
+        description: return all product assignments for account
+        responses:
+            200:
+                description: managed to get all product assignments for account
+                body:
+                    application/json:
+                        example: |
+                            [
+                                {
+                                  "id" : 12345,
+                                  "termServiceRateDeckId" : 12345,
+                                  "termServiceAccountId" : null,
+                                  "externalProfileId" : null,
+                                  "externalAssignmentId" : null,
+                                  "billingAccountId" : null,
+                                  "increaseDate" : "2014-09-18T13:56:43.316Z",
+                                  "decreaseDate" : "2014-09-18T13:56:43.332Z"
+                                }
+                            ]
+    post:
+        description: assign ratedeck to account
+        body:
+            application/json:
+                example: |
+                    {
+                      "id" : null,
+                      "termServiceRateDeckId" : 12345,
+                      "termServiceAccountId" : 225,
+                      "externalProfileId" : 4,
+                      "externalAssignmentId" : null,
+                      "billingAccountId" : 2,
+                      "increaseDate" : "2014-09-18T14:00:26.781Z",
+                      "decreaseDate" : "2014-09-18T14:00:26.797Z"
+                    }
+        responses:
+            201:
+                description: product was successfully assigned
+            400:
+                description: required values are absent
+            404:
+                description: rate deck was not found
+    /{assignmentId}:
+        get:
+            description: return a specific product assignment
+            responses:
+                200:
+                    body:
+                        application/json:
+                            example: |
+                                {
+                                  "id" : 12345,
+                                  "termServiceRateDeckId" : 12345,
+                                  "termServiceAccountId" : null,
+                                  "externalProfileId" : null,
+                                  "externalAssignmentId" : null,
+                                  "billingAccountId" : null,
+                                  "increaseDate" : "2014-09-18T13:56:43.316Z",
+                                  "decreaseDate" : "2014-09-18T13:56:43.332Z"
+                                }
+                400:
+                    description: assignment account id does not equal accountId in request
+                404:
+                    description: assignment was not found
+        delete:
+            description: delete rate deck assignment
+            responses:
+                200:
+                    description: assignment was deleted
+                404:
+                    description: assignment was not found
+/customer/account/{id}/gateway: 
+    get:
+        description: return all available gateways for account
+        responses:
+            200:
+                description: managed to get all gateways for account
+                body:
+                    application/json:
+                        example: |
+                            [
+                                {
+                                  "id" : 55,
+                                  "accountId" : 229,
+                                  "lcrId" : 777,
+                                  "core2Id" : 3,
+                                  "core2ProfileId" : null,
+                                  "host" : "127.0.0.1",
+                                  "port" : 666
+                                }
+                            ]
+    post:
+        description: create gateway
+        body:
+            application/json:
+                example: |
+                    {
+                      "id" : null,
+                      "accountId" : 7,
+                      "lcrId" : 4,
+                      "core2Id" : 3,
+                      "core2ProfileId" : null,
+                      "host" : "127.0.0.1",
+                      "port" : 666
+                    }
+        responses:
+            201:
+                description: gateway was successfully assigned
+            400:
+                description: required values are absent
+    /{gatewayId}:
+        get:
+            description: return a specific gateway
+            responses:
+                200:
+                    body:
+                        application/json:
+                            example: |
+                                {
+                                  "id" : 55,
+                                  "accountId" : 229,
+                                  "lcrId" : 777,
+                                  "core2Id" : 3,
+                                  "core2ProfileId" : null,
+                                  "host" : "127.0.0.1",
+                                  "port" : 666
+                                }
+                404:
+                    description: gateway was not found
+        delete:
+            description: delete gateway
+            responses:
+                200:
+                    description: gateway was deleted
+                404:
+                    description: gateway was not found
+        /attribute:
+            get:
+                description: return all available gateway attributes
+                responses:
+                    200:
+                        description: managed to get all gateway attributes
+                        body:
+                            application/json:
+                                example: |
+                                    [
+                                        {
+                                          "id" : 219,
+                                          "name" : "TRACE",
+                                          "value" : "true",
+                                          "effectiveDate" : "2014-09-19T08:29:31",
+                                          "ineffectiveDate" : "2014-09-19T08:29:31",
+                                          "externalId" : 777
+                                        }
+                                    ]
+            post:
+                description: add attribute to gateway
+                body:
+                    application/json:
+                        example: |
+                            {
+                              "id" : null,
+                              "name" : "TRACE",
+                              "value" : "true",
+                              "effectiveDate" : "2014-09-19T08:32:15",
+                              "ineffectiveDate" : "2014-09-19T08:32:15",
+                              "externalId" : null
+                            }
+                responses:
+                    201:
+                        description: attribute was successfully added
+                    400:
+                        description: required values are absent or restricted values (like id) is present
+            /{attributeId}:
+                get:
+                    description: return a specific gateway attribute
+                    responses:
+                        200:
+                            body:
+                                application/json:
+                                    example: |
+                                        {
+                                          "id" : 221,
+                                          "name" : "TRACE",
+                                          "value" : "true",
+                                          "effectiveDate" : "2014-09-19T08:36:52",
+                                          "ineffectiveDate" : "2014-09-19T08:36:52",
+                                          "externalId" : 777
+                                        }
+                        404:
+                            description: gateway attribute was not found
+                put:
+                    description: update gateway attribute
+                    body:
+                        application/json:
+                            example: |
+                                {
+                                  "id" : 222,
+                                  "name" : "TRACE",
+                                  "value" : "false",
+                                  "effectiveDate" : "2014-09-19T08:38:51",
+                                  "ineffectiveDate" : "2014-09-19T08:38:51",
+                                  "externalId" : 777
+                                }
+                    responses:
+                        201:
+                            description: attribute was successfully added
+                        400:
+                            description: required values are absent
+                delete:
+                    description: delete gateway attribute
+                    responses:
+                        200:
+                            description: gateway attribute was deleted
+                        404:
+                            description: gateway attribute was not found
+/routingexception: 
+    get:
+        description: get all get routing exception
+        responses:
+            200:
+                description: managed to get all accounts
+                body:
+                    application/json:
+                        example: |
+                            [
+                                {
+                                  "id" : null,
+                                  "routingExceptionName" : "ROUTING_EXCEPTION_14111",
+                                  "routingExceptions" : [
+                                    {
+                                        "routingExceptionType" : "BLOCK",
+                                        "prefix" : "303456"
+                                    }
+                                  ]
+                                }
+                            ]
+    post:
+        description: create routing exception
+        body:
+            application/json:
+                example: |
+                    {
+                      "id" : null,
+                      "routingExceptionName" : "ROUTING_EXCEPTION_1411116563654",
+                      "routingExceptions" : [
+                        {
+                            "routingExceptionType" : "BLOCK",
+                            "prefix" : "303456"
+                        }
+                      ]
+                    }
+        responses:
+            201:
+                description: routing exception was successfully created
+            400:
+                description: required fields are absent
+    /{id}:
+        delete:
+            description: delete routing exception
+            responses:
+                200:
+                    description: routing exception was deleted
+                404:
+                    description: routing exception with specified id was not found
