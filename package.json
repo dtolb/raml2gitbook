@@ -1,35 +1,28 @@
 {
-  "name": "raml2gitbook",
+  "name": "raml1",
   "version": "1.0.0",
-  "description": "transform valid raml1 spec into gitbook pages",
+  "description": "generate docs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dtolb/raml2gitbook.git"
-  },
-  "keywords": [
-    "raml",
-    "gitbook",
-    "documentation",
-    "node",
-    "nodejs",
-    "raml1",
-    "mulesoft",
-    "docs"
-  ],
-  "author": "Dan Tolbert",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/dtolb/raml2gitbook/issues"
-  },
-  "homepage": "https://github.com/dtolb/raml2gitbook#readme",
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "debug": "^3.0.1",
-    "raml2html": "^6.4.1",
+    "api-spec-transformer": "^0.2.6",
+    "debug": "^2.6.8",
+    "fs-extra": "^4.0.2",
+    "libxmljs": "^0.18.7",
+    "mkdirp": "^0.5.1",
+    "nunjucks": "^3.0.1",
+    "nunjucks-inspect": "^0.1.6",
+    "raml2html": "^6.3.0",
     "raml2obj": "^5.5.0",
-    "rmdir": "^1.2.0"
+    "ramllint": "^1.2.6",
+    "rmdir": "^1.2.0",
+    "xml-formatter": "^1.0.1",
+    "xml2js": "^0.4.19",
+    "xml2js-es6-promise": "^1.1.1"
   }
 }

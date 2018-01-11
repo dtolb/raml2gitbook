@@ -1,0 +1,47 @@
+{{ '{% method %}' }}
+## {{ name }}
+
+{{ description }}
+
+{% if allUriParameters | length > 0 %}
+### URI Parameters
+| Name | Type | Required |
+|:-----|:-----|:---------|
+{%- for param in allUriParameters %}
+| `{{ param.name}}` | {{ param.type }} | {{ param.required }} |
+{%- endfor -%}
+{% endif %}
+
+{% if queryParameters | length > 0 %}
+### Query Paramters
+
+| Name | Type | Required | Description |
+|:-----|:-----|:---------|:------------|
+{%- for param in queryParameters %}
+| `{{ param.name}}` | {{ param.type }} | {{ param.required }} | {{ param.description | replace(r/[\n\r]/g, "")}} |
+{%- endfor -%}
+{% endif %}
+
+
+{% for example in reqExamples %}
+## Example Request
+```xml
+{{ example.formatted}}
+```
+{% endfor %}
+
+{{ '{% common %}' }}
+
+{% for example in resExamples %}
+## Example : {{ example.description }}
+
+* Response: {{ example.code }}
+
+{{ '{% sample lang="xml" %}' }}
+
+```xml
+{{ example.formatted }}
+```
+{% endfor %}
+
+{{ '{% endmethod %}' }}

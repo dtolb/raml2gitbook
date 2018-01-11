@@ -1,0 +1,184 @@
+#%RAML 0.8
+---
+title: Billing-worker REST API Documentation
+# Use null host here to trigger automatic replacement in javascript
+baseUri: http://null
+version: v1
+securedBy: [basic]
+securitySchemes:
+   - basic:
+        type: Basic Authentication
+/customerRateDecks: 
+    get:
+        description: get all customer rate decks
+        responses:
+            200:
+                description: managed to get all customer rate decks
+                body:
+                    application/json:
+                     schema: |
+                        {
+                            "deckMap" : {
+                                "1" :  {
+                                    "id" : 1,
+                                    "name" : "npanxx1.xlsx",
+                                    "deckType" : "NPANXX",
+                                    "rows" : 7,
+                                    "fileName" : "npanxx1.xlsx"
+                                }
+                            }
+                        }
+            500:
+                description: any transaction error
+    /{deckId}:
+        get:
+            description: get rate decks by its id
+            responses:
+                200:
+                    description: managed to get all customer rate decks
+                    body:
+                        application/json:
+                         schema: |
+                            {
+                                "deckMap" : {
+                                              "1" : {
+                                                      "id" : 1,
+                                                      "name" : "npanxx1.xlsx",
+                                                      "deckType" : "NPANXX",
+                                                      "rows" : 7,
+                                                      "fileName" : "npanxx1.xlsx"
+                                                   }
+                                              }
+                                }
+                400:
+                    description: rate deck with such id does not exist
+                500:
+                    description: any transaction error
+    /upload:
+        post:
+            description: upload customer deck file
+            body:
+                application/x-www-form-urlencoded:
+                    formParameters:
+                      file:
+                        type: file
+                        description: file to upload
+            responses:
+                201:
+                    description: File was successfully uploaded
+                400:
+                    description: File is empty, has invalid structure or unsupported format
+                500:
+                    description: any transaction error
+/profiles/customer/{accountid}/customerDeckAssignments: 
+    post:
+        description: assign deck to customer
+        body:
+            application/json:
+             schema: |
+                {
+                  "id" : null,
+                  "termServiceRateDeckId" : 1,
+                  "termServiceAccountId" : null,
+                  "externalProfileId" : 1,
+                  "externalAssignmentId" : null,
+                  "billingAccountId" : null,
+                  "increaseDate" : "2014-09-15T13:01:03.179Z",
+                  "decreaseDate" : "2014-09-15T13:01:03.196Z"
+                }
+        responses:
+            201:
+                description: deck was successfully assigned
+            400:
+                description: invalid json-body, e.g. deck with specified id does not exist
+            500:
+                description: transaction error
+    get:
+        description: get all customer deck assignments for customer
+        responses:
+            200:
+                description: managed to get all assignments
+                body:
+                    application/json:
+                        schema: |
+                            {
+                              "id":3,"termServiceRateDeckId":1,
+                              "termServiceAccountId":1,
+                              "externalProfileId":1,
+                              "externalAssignmentId":1,
+                              "billingAccountId":null,
+                              "increaseDate":"2014-09-15T13:13:45.000Z",
+                              "decreaseDate":"2014-09-15T13:13:45.000Z"
+                            }
+    /{id}:
+        get:
+            description: get customer deck assignment by id
+            responses:
+                200:
+                    description: managed to get assignment by id
+                    body:
+                        application/json:
+                            schema: |
+                                {
+                                  "id":3,"termServiceRateDeckId":1,
+                                  "termServiceAccountId":1,
+                                  "externalProfileId":1,
+                                  "externalAssignmentId":1,
+                                  "billingAccountId":null,
+                                  "increaseDate":"2014-09-15T13:13:45.000Z",
+                                  "decreaseDate":"2014-09-15T13:13:45.000Z"
+                                }
+                404:
+                    description: deck with specified id does not exist
+        delete:
+            description: delete deck assignment by id
+            responses:
+                202:
+                    description: assignment was successfully deleted
+                404:
+                    description: deck with specified id does not exist
+/customerDeckAssignments: 
+    get:
+        description: get all customer rate assignments
+        responses:
+            200:
+                description: managed to get all customer rate assignments
+                body:
+                    application/json:
+                        schema: |
+                            [
+                                {
+                                    "id":4,
+                                    "termServiceRateDeckId":1,
+                                    "termServiceAccountId":1,
+                                    "externalProfileId":1,
+                                    "externalAssignmentId":1,
+                                    "billingAccountId":null,
+                                    "increaseDate":"2014-09-15T13:49:42.000Z",
+                                    "decreaseDate":"2014-09-15T13:49:42.000Z"
+                                }
+                            ]
+            500:
+                description: any transaction error
+    /{id}:
+        get:
+            description: get customer deck assignment by id
+            responses:
+                200:
+                    body:
+                        application/json:
+                            schema: |
+                                {
+                                    "id":5,
+                                    "termServiceRateDeckId":1,
+                                    "termServiceAccountId":1,
+                                    "externalProfileId":1,
+                                    "externalAssignmentId":1,
+                                    "billingAccountId":null,
+                                    "increaseDate":"2014-09-15T13:55:44.000Z",
+                                    "decreaseDate":"2014-09-15T13:55:44.000Z"
+                                }
+                404:
+                    description: assignment with specified id does not exists
+                500:
+                    description: any transaction error
