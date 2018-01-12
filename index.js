@@ -1,12 +1,13 @@
-const raml2obj = require('raml2obj');
-const {promisify} = require('util');
-const fs = require('fs-extra')
-const rmdir = promisify(require('rmdir'));
-const nunjucks    = require( 'nunjucks' ) ;
-nunjucks.configure({ autoescape: false });
-const format = require('xml-formatter');
-const options = {indentation: '  ', stripComments: false};
+const raml2obj        = require('raml2obj');
+const {promisify}     = require('util');
+const fs              = require('fs-extra')
+const rmdir           = promisify(require('rmdir'));
+const nunjucks        = require( 'nunjucks' ) ;
+const format          = require('xml-formatter');
+const options         = {indentation: '  ', stripComments: false};
 const NunjucksInspect = require('nunjucks-inspect');
+
+nunjucks.configure({ autoescape: false });
 
 const name = 'Raml2Gitbook';
 const debug = require('debug')(name);
@@ -91,6 +92,9 @@ const createMainPage = (baseResource) => {
 
 const getMethods = (resource, root) => {
     let methods = [];
+    if (resource.description  && ) {
+
+    }
     if (resource.methods) {
         for (let method of resource.methods){
             let queryParameters = [];
@@ -266,7 +270,7 @@ const createSummary = async (resources, template) => {
         }
         summary = summary + entry;
         let allMethods = getMethods(resource, uri);
-        console.log(allMethods.length)
+//        console.log(allMethods.length)
         for (let method of allMethods) {
             method.fileName = (method.method.toLocaleLowerCase() + method.name).replace(/\/|\{|\}/g, '');
             method.fileFolder = location;

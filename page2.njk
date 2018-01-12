@@ -18,7 +18,7 @@
 | Name | Type | Required | Description |
 |:-----|:-----|:---------|:------------|
 {%- for param in queryParameters %}
-| `{{ param.name}}` | {{ param.type }} | {{ param.required }} | {{ param.description }} |
+| `{{ param.name}}` | {{ param.type }} | {{ param.required }} | {{ param.description | replace(r/[\n\r]/g, "")}} |
 {%- endfor -%}
 {% endif %}
 
